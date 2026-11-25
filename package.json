@@ -4,8 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "wasm:dev": "wasm-pack build contour --dev --target web --out-dir ../src/pkg",
+    "wasm:build": "wasm-pack build contour --release --target web --out-dir ../src/pkg",
+    "watch:wasm": "cargo-watch -C contour -w src -s \"wasm-pack build --dev --target web --out-dir ../src/pkg\"",
+    "dev": "npm run wasm:dev && concurrently -k \"npm:watch:wasm\" \"vite\"",
+    "build": "npm run wasm:build && tsc && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {

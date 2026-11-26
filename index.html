@@ -14,42 +14,203 @@
     - flex flex-col items-center p-5: stack toolbar & canvas vertically, centered
   -->
   <body
-    class="m-0 flex min-h-screen flex-col items-center bg-zinc-900 p-5 font-sans text-zinc-100"
+    class="m-0 flex min-h-screen overflow-hidden bg-zinc-900 font-sans text-zinc-100"
   >
-    <!-- Top Toolbar: holds all interactive controls -->
-    <header
-      class="mb-4 flex flex-wrap items-center gap-5 rounded-lg border border-zinc-700 bg-zinc-800 px-5 py-3 shadow-lg"
+    <!-- Left Expandable Settings Panel -->
+    <aside
+      id="settings-panel"
+      class="flex w-72 shrink-0 flex-col justify-between border-r border-zinc-750 bg-zinc-850 transition-all duration-200 select-none"
     >
-      <!-- `id="regen-btn"` is grabbed by main.ts to trigger `world.generate()` -->
-      <button
-        id="regen-btn"
-        class="cursor-pointer rounded-md bg-indigo-600 px-4 py-2 font-semibold text-white transition hover:bg-indigo-500 active:bg-indigo-700"
+      <div>
+        <!-- Panel Header + Collapse Toggle -->
+        <div
+          class="flex items-center justify-between border-b border-zinc-750 px-4 py-3"
+        >
+          <span
+            id="panel-title"
+            class="text-xs font-semibold tracking-wider text-zinc-400 uppercase"
+          >
+            World Settings
+          </span>
+          <button
+            id="toggle-panel-btn"
+            type="button"
+            title="Toggle Settings Panel"
+            class="cursor-pointer rounded-md p-1.5 text-zinc-400 transition hover:bg-zinc-750 hover:text-zinc-100"
+          >
+            <svg
+              id="toggle-icon"
+              class="h-4 w-4 transition-transform duration-200"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Expandable Controls Body -->
+        <div id="panel-body" class="flex flex-col gap-5 p-4">
+          <!-- Primary Action -->
+          <!-- `id="regen-btn"` is grabbed by main.ts to trigger `world.generate()` -->
+          <button
+            id="regen-btn"
+            class="w-full cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 active:bg-indigo-700"
+          >
+            New World
+          </button>
+
+          <!-- Terrain & Climate Group -->
+          <div class="flex flex-col gap-3.5">
+            <h2
+              class="text-[11px] font-semibold tracking-wider text-zinc-500 uppercase"
+            >
+              Terrain &amp; Climate
+            </h2>
+
+            <!-- Active: Sea Level -->
+            <!-- Wrapping <input> inside <label> links the text to the slider -->
+            <label class="flex flex-col gap-1.5 text-xs text-zinc-300">
+              <div class="flex justify-between">
+                <span>Sea Level</span>
+                <span id="sea-value" class="font-mono text-zinc-400">0.45</span>
+              </div>
+              <!-- `id="sea-slider"` feeds values from 0.10 to 0.80 into `world.set_sea_level()` -->
+              <input
+                id="sea-slider"
+                type="range"
+                min="0.1"
+                max="0.8"
+                step="0.01"
+                value="0.45"
+                class="w-full cursor-pointer accent-indigo-500"
+              />
+            </label>
+
+            <!-- Stub: Noise Frequency -->
+            <label class="flex flex-col gap-1.5 text-xs text-zinc-300">
+              <div class="flex justify-between">
+                <span>Continent Scale</span>
+                <span id="freq-value" class="font-mono text-zinc-400"
+                  >0.005</span
+                >
+              </div>
+              <input
+                id="freq-slider"
+                type="range"
+                min="0.001"
+                max="0.02"
+                step="0.001"
+                value="0.005"
+                class="w-full cursor-pointer accent-indigo-500"
+              />
+            </label>
+
+            <!-- Stub: Noise Octaves -->
+            <label class="flex flex-col gap-1.5 text-xs text-zinc-300">
+              <div class="flex justify-between">
+                <span>Coastline Detail</span>
+                <span id="octaves-value" class="font-mono text-zinc-400"
+                  >5</span
+                >
+              </div>
+              <input
+                id="octaves-slider"
+                type="range"
+                min="1"
+                max="8"
+                step="1"
+                value="5"
+                class="w-full cursor-pointer accent-indigo-500"
+              />
+            </label>
+
+            <!-- Stub: Island Falloff -->
+            <label class="flex flex-col gap-1.5 text-xs text-zinc-300">
+              <div class="flex justify-between">
+                <span>Island Falloff</span>
+                <span id="falloff-value" class="font-mono text-zinc-400"
+                  >1.00</span
+                >
+              </div>
+              <input
+                id="falloff-slider"
+                type="range"
+                min="0.0"
+                max="2.0"
+                step="0.05"
+                value="1.0"
+                class="w-full cursor-pointer accent-indigo-500"
+              />
+            </label>
+          </div>
+
+          <hr class="border-zinc-750" />
+
+          <!-- Sculpting Brush Group -->
+          <div class="flex flex-col gap-3.5">
+            <h2
+              class="text-[11px] font-semibold tracking-wider text-zinc-500 uppercase"
+            >
+              Sculpt Brush
+            </h2>
+
+            <!-- Wired to main.ts brushRadius -->
+            <label class="flex flex-col gap-1.5 text-xs text-zinc-300">
+              <div class="flex justify-between">
+                <span>Brush Radius</span>
+                <span id="radius-value" class="font-mono text-zinc-400"
+                  >26px</span
+                >
+              </div>
+              <input
+                id="radius-slider"
+                type="range"
+                min="5"
+                max="80"
+                step="1"
+                value="26"
+                class="w-full cursor-pointer accent-indigo-500"
+              />
+            </label>
+
+            <!-- Wired to main.ts brushStrength -->
+            <label class="flex flex-col gap-1.5 text-xs text-zinc-300">
+              <div class="flex justify-between">
+                <span>Brush Strength</span>
+                <span id="strength-value" class="font-mono text-zinc-400"
+                  >0.03</span
+                >
+              </div>
+              <input
+                id="strength-slider"
+                type="range"
+                min="0.01"
+                max="0.15"
+                step="0.01"
+                value="0.03"
+                class="w-full cursor-pointer accent-indigo-500"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Hint -->
+      <div
+        id="panel-footer"
+        class="border-t border-zinc-750 px-4 py-3 text-[11px] text-zinc-400"
       >
-        New World
-      </button>
-
-      <!-- Wrapping <input> inside <label> links the text to the slider -->
-      <label class="flex items-center gap-2 text-sm font-medium text-zinc-200">
-        Sea Level
-        <!-- `id="sea-slider"` feeds values from 0.10 to 0.80 into `world.set_sea_level()` -->
-        <input
-          id="sea-slider"
-          type="range"
-          min="0.1"
-          max="0.8"
-          step="0.01"
-          value="0.45"
-          class="cursor-pointer accent-indigo-500"
-        />
-      </label>
-
-      <span class="text-xs text-zinc-400">
-        Drag: Raise Land | Shift+Drag: Lower Sea
-      </span>
-    </header>
+        Drag: Raise Land &bull; Shift+Drag: Lower Sea
+      </div>
+    </aside>
 
     <!-- Main Viewport: holds the drawing surface -->
-    <main>
+    <main class="flex flex-1 items-center justify-center overflow-auto p-6">
       <!--
         `<canvas>` is a blank pixel grid.
         `width` and `height` (700x700) MUST match the WIDTH/HEIGHT constants in main.ts
@@ -59,7 +220,7 @@
         id="map-canvas"
         width="700"
         height="700"
-        class="cursor-crosshair rounded-md border-2 border-zinc-700 shadow-2xl"
+        class="cursor-crosshair rounded-md border-2 border-zinc-750 shadow-2xl"
       ></canvas>
     </main>
 

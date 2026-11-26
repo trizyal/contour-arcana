@@ -5,10 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contour Arcana</title>
   </head>
-  <body>
-    <header class="toolbar">
-      <button id="regen-btn">New World</button>
-      <label>
+  <body
+    class="min-h-screen bg-zinc-900 text-zinc-100 flex flex-col items-center p-6"
+  >
+    <header
+      class="flex items-center gap-5 bg-zinc-800 px-5 py-3 rounded-lg border border-zinc-700 mb-4 shadow-lg"
+    >
+      <button
+        id="regen-btn"
+        class="bg-pink-600 hover:bg-pink-500 text-white font-semibold px-4 py-2 rounded-md cursor-pointer transition"
+      >
+        New World
+      </button>
+      <label class="flex items-center gap-2 text-sm font-medium">
         Sea Level
         <input
           id="sea-slider"
@@ -17,13 +26,21 @@
           max="0.8"
           step="0.01"
           value="0.45"
+          class="accent-indigo-500"
         />
       </label>
-      <span class="hint">Drag: Raise Land | Shift+Drag: Lower Sea</span>
+      <span class="text-xs text-zinc-400"
+        >Drag: Raise Land | Shift+Drag: Lower Sea</span
+      >
     </header>
 
     <main>
-      <canvas id="map-canvas" width="700" height="700"></canvas>
+      <canvas
+        id="map-canvas"
+        width="700"
+        height="700"
+        class="border-2 border-zinc-700 rounded-md cursor-crosshair shadow-2xl"
+      ></canvas>
     </main>
 
     <script type="module" src="/src/main.ts"></script>

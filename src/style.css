@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+@theme {
+  --color-zinc-25:  oklch(97.6% 0 0);
+  --color-zinc-50:  oklch(98.5% 0 0);
+  --color-zinc-75:  oklch(97.6% 0.0005 286.375);
+  --color-zinc-100: oklch(96.7% 0.001 286.375);
+  --color-zinc-125: oklch(94.35% 0.0025 286.348);
+  --color-zinc-150: oklch(94.35% 0.0025 286.348);
+  --color-zinc-200: oklch(92% 0.004 286.32);
+  --color-zinc-250: oklch(89.55% 0.005 286.303);
+  --color-zinc-300: oklch(87.1% 0.006 286.286);
+  --color-zinc-350: oklch(78.8% 0.0105 286.176);
+  --color-zinc-400: oklch(70.5% 0.015 286.067);
+  --color-zinc-450: oklch(62.85% 0.0155 286.002);
+  --color-zinc-500: oklch(55.2% 0.016 285.938);
+  --color-zinc-550: oklch(49.7% 0.0165 285.862);
+  --color-zinc-600: oklch(44.2% 0.017 285.786);
+  --color-zinc-650: oklch(40.6% 0.015 285.795);
+  --color-zinc-700: oklch(37% 0.013 285.805);
+  --color-zinc-750: oklch(32.2% 0.0095 285.919);
+  --color-zinc-800: oklch(27.4% 0.006 286.033);
+  --color-zinc-850: oklch(24.2% 0.006 285.959);
+  --color-zinc-900: oklch(21% 0.006 285.885);
+  --color-zinc-925: oklch(17.55% 0.0055 285.854);
+  --color-zinc-950: oklch(14.1% 0.005 285.823);
+}

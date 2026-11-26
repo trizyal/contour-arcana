@@ -2,23 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Ensures proper scaling on different screen sizes -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contour Arcana</title>
   </head>
+
+  <!--
+    Tailwind utility classes on <body>:
+    - min-h-screen: fill at least 100% of the browser window height
+    - bg-zinc-900 text-zinc-100: dark charcoal background, light text
+    - flex flex-col items-center p-5: stack toolbar & canvas vertically, centered
+  -->
   <body
-    class="min-h-screen bg-zinc-900 text-zinc-100 flex flex-col items-center p-6"
+    class="m-0 flex min-h-screen flex-col items-center bg-zinc-900 p-5 font-sans text-zinc-100"
   >
+    <!-- Top Toolbar: holds all interactive controls -->
     <header
-      class="flex items-center gap-5 bg-zinc-800 px-5 py-3 rounded-lg border border-zinc-700 mb-4 shadow-lg"
+      class="mb-4 flex flex-wrap items-center gap-5 rounded-lg border border-zinc-700 bg-zinc-800 px-5 py-3 shadow-lg"
     >
+      <!-- `id="regen-btn"` is grabbed by main.ts to trigger `world.generate()` -->
       <button
         id="regen-btn"
-        class="bg-pink-600 hover:bg-pink-500 text-white font-semibold px-4 py-2 rounded-md cursor-pointer transition"
+        class="cursor-pointer rounded-md bg-indigo-600 px-4 py-2 font-semibold text-white transition hover:bg-indigo-500 active:bg-indigo-700"
       >
         New World
       </button>
-      <label class="flex items-center gap-2 text-sm font-medium">
+
+      <!-- Wrapping <input> inside <label> links the text to the slider -->
+      <label class="flex items-center gap-2 text-sm font-medium text-zinc-200">
         Sea Level
+        <!-- `id="sea-slider"` feeds values from 0.10 to 0.80 into `world.set_sea_level()` -->
         <input
           id="sea-slider"
           type="range"
@@ -26,23 +39,34 @@
           max="0.8"
           step="0.01"
           value="0.45"
-          class="accent-indigo-500"
+          class="cursor-pointer accent-indigo-500"
         />
       </label>
-      <span class="text-xs text-zinc-400"
-        >Drag: Raise Land | Shift+Drag: Lower Sea</span
-      >
+
+      <span class="text-xs text-zinc-400">
+        Drag: Raise Land | Shift+Drag: Lower Sea
+      </span>
     </header>
 
+    <!-- Main Viewport: holds the drawing surface -->
     <main>
+      <!--
+        `<canvas>` is a blank pixel grid.
+        `width` and `height` (700x700) MUST match the WIDTH/HEIGHT constants in main.ts
+        so the pixel buffer from Rust aligns 1:1 with the canvas.
+      -->
       <canvas
         id="map-canvas"
         width="700"
         height="700"
-        class="border-2 border-zinc-700 rounded-md cursor-crosshair shadow-2xl"
+        class="cursor-crosshair rounded-md border-2 border-zinc-700 shadow-2xl"
       ></canvas>
     </main>
 
+    <!--
+      Entry point for Vite. `type="module"` lets us use modern `import` statements.
+      Vite automatically compiles TypeScript and bundles this when you run `npm run build`.
+    -->
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -46,6 +46,16 @@ impl WorldMap {
         map
     }
 
+    /// Resizes the map grid and regenerates terrain with `seed`, reallocating
+    /// `heights` and `pixels` inside WebAssembly memory.
+    pub fn resize(&mut self, width: usize, height: usize, seed: u32) {
+        self.width = width;
+        self.height = height;
+        self.heights = vec![0.0; width * height];
+        self.pixels = vec![0; width * height * 4];
+        self.generate(seed);
+    }
+
     /// Fills `self.heights` with procedural island terrain using a numeric `seed`.
     /// Passing the same seed will always generate the exact same world.
     pub fn generate(&mut self, seed: u32) {

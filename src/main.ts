@@ -59,12 +59,18 @@ async function start() {
   let brushRadius = parseInt(radiusSlider.value, 10);
   let brushStrength = parseFloat(strengthSlider.value);
 
-  // Viewport transform state: scales the map so its longer edge fits inside the full-screen canvas
+  // Viewport transform state: scales the map so its longer edge fits inside the full-screen canvas,
+  // while `userZoom` lets the user zoom in/out with the mouse wheel
   let viewW = window.innerWidth;
   let viewH = window.innerHeight;
+  let fitZoom = 1;
+  let userZoom = 1;
   let zoom = 1;
   let offsetX = 0;
   let offsetY = 0;
+
+  const MIN_USER_ZOOM = 0.5;
+  const MAX_USER_ZOOM = 16;
 
   function computeFitTransform() {
     viewW = window.innerWidth;
@@ -72,8 +78,9 @@ async function start() {
     canvas.width = viewW;
     canvas.height = viewH;
 
-    // Fit the map's longer edge inside the viewport so the entire map is visible
-    zoom = Math.min(viewW, viewH) / mapSize;
+    // Fit the map's longer edge inside the viewport so the entire map is visible at `userZoom = 1`
+    fitZoom = Math.min(viewW, viewH) / mapSize;
+    zoom = fitZoom * userZoom;
     const drawSize = mapSize * zoom;
     offsetX = (viewW - drawSize) / 2;
     offsetY = (viewH - drawSize) / 2;
@@ -87,7 +94,7 @@ async function start() {
 
   /**
    * Reads the RGBA pixel buffer directly out of Rust's WebAssembly RAM,
-   * writes it to `mapCanvas`, and renders it centered at the fit zoom.
+   * writes it to `mapCanvas`, and renders it at the current zoom/offset.
    */
   function render() {
     // Create a zero-copy "window" into Wasm memory starting at `world.pixels_ptr()`.
@@ -108,6 +115,34 @@ async function start() {
     computeFitTransform();
     paintViewport();
   });
+
+  // --- Mouse Scroll Zoom (anchored to cursor position) ---
+  canvas.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+
+      const rect = canvas.getBoundingClientRect();
+      const vx = e.clientX - rect.left;
+      const vy = e.clientY - rect.top;
+
+      // Map coordinate currently under the mouse cursor before zooming
+      const mapX = (vx - offsetX) / zoom;
+      const mapY = (vy - offsetY) / zoom;
+
+      // Smoothly scale zoom factor based on wheel direction
+      const zoomFactor = Math.exp(-e.deltaY * 0.0012);
+      userZoom = Math.min(MAX_USER_ZOOM, Math.max(MIN_USER_ZOOM, userZoom * zoomFactor));
+      zoom = fitZoom * userZoom;
+
+      // Keep `(mapX, mapY)` anchored at `(vx, vy)` on screen
+      offsetX = vx - mapX * zoom;
+      offsetY = vy - mapY * zoom;
+
+      paintViewport();
+    },
+    { passive: false },
+  );
 
   // --- Expand / Collapse Sidebar ---
   let isCollapsed = true;
@@ -134,6 +169,7 @@ async function start() {
     world.resize(mapSize, mapSize, currentSeed);
     world.set_sea_level(parseFloat(seaSlider.value));
 
+    userZoom = 1;
     computeFitTransform();
     render();
   });

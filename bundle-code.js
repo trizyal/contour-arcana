@@ -65,10 +65,7 @@ function walkDir(currentDir, fileList = []) {
       walkDir(fullPath, fileList);
     } else if (entry.isFile()) {
       // Skip if file is in our ignore list or extension isn't matched
-      if (
-        IGNORE_FILES.has(entry.name) ||
-        !INCLUDE_EXTENSIONS.has(path.extname(entry.name))
-      ) {
+      if (IGNORE_FILES.has(entry.name) || !INCLUDE_EXTENSIONS.has(path.extname(entry.name))) {
         continue;
       }
       fileList.push(fullPath);
@@ -79,14 +76,14 @@ function walkDir(currentDir, fileList = []) {
 }
 
 function bundleCode() {
-  console.log(`Scanning Tauri codebase in: ${ROOT_DIR}...`);
+  console.log(`Scanning codebase in: ${ROOT_DIR}...`);
   const files = walkDir(ROOT_DIR);
 
   let outputStream = fs.createWriteStream(OUTPUT_FILE, { encoding: "utf8" });
 
   // Add header
   outputStream.write(`/* ==========================================\n`);
-  outputStream.write(`   TAURI CODEBASE BUNDLE\n`);
+  outputStream.write(`   CODEBASE BUNDLE\n`);
   outputStream.write(`   Generated on: ${new Date().toISOString()}\n`);
   outputStream.write(`   ========================================== */\n\n`);
 

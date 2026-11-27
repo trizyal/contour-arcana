@@ -29,8 +29,7 @@ async function start() {
   const panelTitle = document.querySelector<HTMLElement>("#panel-title")!;
   const panelBody = document.querySelector<HTMLElement>("#panel-body")!;
   const panelFooter = document.querySelector<HTMLElement>("#panel-footer")!;
-  const toggleBtn =
-    document.querySelector<HTMLButtonElement>("#toggle-panel-btn")!;
+  const toggleBtn = document.querySelector<HTMLButtonElement>("#toggle-panel-btn")!;
   const toggleIcon = document.querySelector<SVGElement>("#toggle-icon")!;
 
   // Controls
@@ -41,19 +40,15 @@ async function start() {
   // Stub sliders + value labels
   const freqSlider = document.querySelector<HTMLInputElement>("#freq-slider")!;
   const freqValue = document.querySelector<HTMLElement>("#freq-value")!;
-  const octavesSlider =
-    document.querySelector<HTMLInputElement>("#octaves-slider")!;
+  const octavesSlider = document.querySelector<HTMLInputElement>("#octaves-slider")!;
   const octavesValue = document.querySelector<HTMLElement>("#octaves-value")!;
-  const falloffSlider =
-    document.querySelector<HTMLInputElement>("#falloff-slider")!;
+  const falloffSlider = document.querySelector<HTMLInputElement>("#falloff-slider")!;
   const falloffValue = document.querySelector<HTMLElement>("#falloff-value")!;
 
   // Sculpt brush sliders (ready to use immediately on the TS side)
-  const radiusSlider =
-    document.querySelector<HTMLInputElement>("#radius-slider")!;
+  const radiusSlider = document.querySelector<HTMLInputElement>("#radius-slider")!;
   const radiusValue = document.querySelector<HTMLElement>("#radius-value")!;
-  const strengthSlider =
-    document.querySelector<HTMLInputElement>("#strength-slider")!;
+  const strengthSlider = document.querySelector<HTMLInputElement>("#strength-slider")!;
   const strengthValue = document.querySelector<HTMLElement>("#strength-value")!;
 
   let brushRadius = parseInt(radiusSlider.value, 10);
@@ -99,6 +94,8 @@ async function start() {
   // Dragging the slider updates Rust's sea_level in real time (`input` fires continuously)
   seaSlider.addEventListener("input", () => {
     world.set_sea_level(parseFloat(seaSlider.value));
+    const sea = parseFloat(seaSlider.value);
+    seaValue.textContent = sea.toFixed(2);
     render();
   });
 

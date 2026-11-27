@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-zinc-25:  oklch(97.6% 0 0);
-  --color-zinc-50:  oklch(98.5% 0 0);
-  --color-zinc-75:  oklch(97.6% 0.0005 286.375);
+  --color-zinc-25: oklch(97.6% 0 0);
+  --color-zinc-50: oklch(98.5% 0 0);
+  --color-zinc-75: oklch(97.6% 0.0005 286.375);
   --color-zinc-100: oklch(96.7% 0.001 286.375);
   --color-zinc-125: oklch(94.35% 0.0025 286.348);
   --color-zinc-150: oklch(94.35% 0.0025 286.348);
@@ -24,4 +24,90 @@
   --color-zinc-900: oklch(21% 0.006 285.885);
   --color-zinc-925: oklch(17.55% 0.0055 285.854);
   --color-zinc-950: oklch(14.1% 0.005 285.823);
+}
+
+.arcana-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: 20px;
+}
+
+.arcana-slider::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--color-zinc-950);
+  transition: background-color 120ms ease;
+}
+
+.arcana-slider:hover::-webkit-slider-runnable-track {
+  background: var(--color-zinc-925);
+}
+
+.arcana-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: var(--color-zinc-900);
+  border: 2px solid var(--color-pink-800);
+  margin-top: -5.5px;
+  transition:
+    transform 120ms ease,
+    border-color 120ms ease,
+    background-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.arcana-slider:hover::-webkit-slider-thumb,
+.arcana-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.12);
+  border-color: var(--color-pink-600);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-pink-600) 22%, transparent);
+}
+
+.arcana-slider:active::-webkit-slider-thumb {
+  transform: scale(1.04);
+  background: var(--color-zinc-850);
+  border-color: var(--color-pink-500);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-pink-500) 28%, transparent);
+}
+
+.arcana-slider::-moz-range-track {
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--color-zinc-950);
+  transition: background-color 120ms ease;
+}
+
+.arcana-slider:hover::-moz-range-track {
+  background: var(--color-zinc-925);
+}
+
+.arcana-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: var(--color-zinc-900);
+  border: 2px solid var(--color-pink-800);
+  transition:
+    transform 120ms ease,
+    border-color 120ms ease,
+    background-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.arcana-slider:hover::-moz-range-thumb,
+.arcana-slider::-moz-range-thumb:hover {
+  transform: scale(1.12);
+  border-color: var(--color-pink-600);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-pink-600) 22%, transparent);
+}
+
+.arcana-slider:active::-moz-range-thumb {
+  transform: scale(1.04);
+  background: var(--color-zinc-850);
+  border-color: var(--color-pink-500);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-pink-500) 28%, transparent);
 }
